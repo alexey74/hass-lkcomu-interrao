@@ -90,7 +90,7 @@ async def async_get_icons_for_providers(
     base_url = api.BASE_URL
     icons = {}
 
-    async with session.get(base_url + "/asset-manifest.json") as response:
+    async with session.get(base_url + "/asset-manifest.json", ssl=False) as response:
         manifest = await response.json()
 
     iter_types = []
@@ -134,7 +134,7 @@ async def async_get_icons_for_providers(
         icons[ProviderType.TKO.name.lower()] = icons[ProviderType.MES.name.lower()]
 
     if "main.js" in manifest:
-        async with session.get(base_url + "/" + manifest["main.js"]) as response:
+        async with session.get(base_url + "/" + manifest["main.js"], ssl=False) as response:
             js_code = await response.text()
 
         m = _RE_FAVICON.search(js_code)
